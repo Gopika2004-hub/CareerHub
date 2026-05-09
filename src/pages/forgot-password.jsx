@@ -165,7 +165,7 @@ const ForgotPassword = () => {
       )}
       <Card className="w-full max-w-md border-black/10 shadow-xl dark:bg-zinc-900 dark:border-white/10">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-extrabold tracking-tight text-white">Reset Password</CardTitle>
+          <CardTitle className="text-3xl font-extrabold tracking-tight text-black">Reset Password</CardTitle>
           <CardDescription>
             {step === "email"
               ? "Enter your email to receive a password reset link"

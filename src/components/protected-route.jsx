@@ -36,7 +36,14 @@ const ProtectedRoute = ({ children }) => {
     fetch(`/api/check-archived?user_id=${encodeURIComponent(user.id)}`)
       .then(r => r.json())
       .then(data => {
-        const archived = data.archived === true;
+        const role = user?.unsafeMetadata?.role;
+        // Only block if archive type matches the user's actual role.
+        // Prevents stale candidate archives from blocking employer accounts.
+        const archived = data.archived === true && (
+          (role === 'recruiter' && data.type === 'employer') ||
+          (role === 'candidate' && data.type === 'candidate') ||
+          (!role)
+        );
         archiveCache[user.id] = archived;
         setIsArchived(archived);
         setArchiveChecked(true);

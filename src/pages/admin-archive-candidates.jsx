@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronRight, Archive, ShieldCheck, ShieldOff, ShieldX } from "lucide-react";
+import { ChevronDown, ChevronRight, Archive, ShieldCheck, ShieldOff, ShieldX, Trash2 } from "lucide-react";
 import { BarLoader } from "react-spinners";
 import AdminSidebar from "@/components/admin-sidebar";
 import { ADMIN_TOKEN } from "@/components/admin-route";
@@ -210,6 +210,25 @@ export default function AdminArchiveCandidates() {
     showToast("Candidate has been permanently blocked.", "warning");
   };
 
+  const handlePurgeEmpty = async () => {
+    const empty = records.filter(r => !r.profile?.full_name?.trim() && !r.profile?.email?.trim());
+    if (empty.length === 0) return showToast("No empty entries to remove.", "warning");
+    if (!confirm(`Delete ${empty.length} archive entr${empty.length !== 1 ? "ies" : "y"} with no name or email?`)) return;
+    try {
+      const res = await fetch("/api/admin/purge-empty-archives?type=candidates", {
+        method: "DELETE",
+        headers: H,
+      });
+      const data = await res.json();
+      if (data.success) {
+        setRecords(prev => prev.filter(r => (r.profile?.full_name?.trim()) || (r.profile?.email?.trim())));
+        showToast(`Removed ${data.removed} empty archive entr${data.removed !== 1 ? "ies" : "y"}.`);
+      }
+    } catch {
+      alert("Failed to purge empty archives.");
+    }
+  };
+
   const filtered = records.filter(r => {
     if (!search) return true;
     const q = search.toLowerCase();
@@ -239,14 +258,25 @@ export default function AdminArchiveCandidates() {
               {records.length} candidate{records.length !== 1 ? "s" : ""} archived — click a row to expand details and manage access
             </p>
           </div>
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search by name, email or reason…"
-            className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-72 bg-white
-                       focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <div className="flex items-center gap-3">
+            {records.some(r => !r.profile?.full_name?.trim() && !r.profile?.email?.trim()) && (
+              <button
+                onClick={handlePurgeEmpty}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold
+                           bg-red-600 hover:bg-red-700 text-white transition-colors"
+              >
+                <Trash2 size={15} /> Clean Empty
+              </button>
+            )}
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search by name, email or reason…"
+              className="border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-72 bg-white
+                         focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+          </div>
         </header>
 
         {loading ? (

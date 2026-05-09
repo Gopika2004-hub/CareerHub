@@ -76,7 +76,7 @@ export default function AdminLogin() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="px-8 py-8 space-y-5">
+          <form onSubmit={handleSubmit} className="px-8 py-8 space-y-5" autoComplete="off">
             {/* Email */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1.5">Admin Email</label>
@@ -85,6 +85,7 @@ export default function AdminLogin() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="admin@example.com"
+                autoComplete="off"
                 required
                 className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm
                            focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent
@@ -109,6 +110,7 @@ export default function AdminLogin() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter admin password"
+                  autoComplete="new-password"
                   required
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 pr-11 text-sm
                              focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent

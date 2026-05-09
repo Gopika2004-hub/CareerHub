@@ -25,6 +25,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// Normalize /backend/* URLs: append .php if the path has no extension
+// This allows the frontend to call /api/admin/login (no .php) and still
+// hit the route registered as /backend/admin/login.php
+app.use((req, res, next) => {
+  const p = req.path;
+  if (p.startsWith('/backend/') && !p.includes('.')) {
+    req.url = req.url.replace(p, p + '.php');
+  }
+  next();
+});
+
 // Setup multer for file uploads
 const uploadDir = path.join(__dirname, 'backend', 'uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -964,6 +975,27 @@ app.get('/backend/admin/archives.php', verifyAdmin, (req, res) => {
   return res.json(employerArchives);
 });
 
+// DELETE — purge all archive entries that have no identifying details (name + email both empty)
+app.delete('/backend/admin/purge-empty-archives.php', verifyAdmin, (req, res) => {
+  const { type } = req.query;
+  const isEmpty = p => !((p?.full_name || '').trim()) && !((p?.email || '').trim());
+
+  let removed = 0;
+  if (type === 'candidates' || !type) {
+    const before = candidateArchives.length;
+    candidateArchives = candidateArchives.filter(r => !isEmpty(r.profile));
+    removed += before - candidateArchives.length;
+  }
+  if (type === 'employers' || !type) {
+    const before = employerArchives.length;
+    employerArchives = employerArchives.filter(r => !isEmpty(r.employer_info));
+    removed += before - employerArchives.length;
+  }
+
+  saveDb();
+  res.json({ success: true, removed });
+});
+
 // POST — lift access (restore an archived user — removes from archive entirely)
 app.post('/backend/admin/lift-access.php', verifyAdmin, (req, res) => {
   const { user_id, type } = req.body || {};
@@ -1302,7 +1334,7 @@ app.delete('/backend/admin/applications.php', verifyAdmin, (req, res) => {
 });
 
 // ==================== HEALTH CHECK ====================
-app.get('/backend/health', (req, res) => {
+app.get(['/backend/health', '/backend/health.php'], (req, res) => {
   const dbExists = fs.existsSync(dbFilePath);
   res.json({
     status: 'ok',
