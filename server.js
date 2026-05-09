@@ -25,9 +25,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// On Vercel, requests arrive as /api/* — rewrite to /backend/* so Express routes match
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    req.url = req.url.replace(/^\/api\//, '/backend/');
+  }
+  next();
+});
+
 // Normalize /backend/* URLs: append .php if the path has no extension
-// This allows the frontend to call /api/admin/login (no .php) and still
-// hit the route registered as /backend/admin/login.php
 app.use((req, res, next) => {
   const p = req.path;
   if (p.startsWith('/backend/') && !p.includes('.')) {
@@ -38,9 +44,11 @@ app.use((req, res, next) => {
 
 // Setup multer for file uploads
 const uploadDir = path.join(__dirname, 'backend', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (_) { /* read-only filesystem on Vercel — uploads disabled */ }
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadDir));
@@ -172,10 +180,8 @@ function gracefulShutdown(signal) {
   console.log('👋 [SHUTDOWN] Database saved. Goodbye!');
   process.exit(0);
 }
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('exit', () => {
-  console.log('🔚 [EXIT] Process exiting.');
+  if (!process.env.VERCEL) console.log('🔚 [EXIT] Process exiting.');
 });
 
 // Token verification middleware
@@ -1350,18 +1356,6 @@ app.get(['/backend/health', '/backend/health.php'], (req, res) => {
   });
 });
 
-// ==================== START SERVER ====================
-app.listen(PORT, () => {
-  console.log('');
-  console.log('='.repeat(60));
-  console.log(`🚀 Job Portal Backend running on http://localhost:${PORT}`);
-  console.log(`📁 Upload directory: ${uploadDir}`);
-  console.log(`💾 Database file: ${dbFilePath}`);
-  console.log(`📊 Current data: ${jobs.length} jobs, ${companies.length} companies`);
-  console.log('='.repeat(60));
-  console.log('');
-});
-
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error("SERVER ERROR:", err);
@@ -1371,3 +1365,21 @@ app.use((err, req, res, next) => {
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
+
+// ==================== START SERVER (local only) ====================
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log('');
+    console.log('='.repeat(60));
+    console.log(`🚀 Job Portal Backend running on http://localhost:${PORT}`);
+    console.log(`📁 Upload directory: ${uploadDir}`);
+    console.log(`💾 Database file: ${dbFilePath}`);
+    console.log(`📊 Current data: ${jobs.length} jobs, ${companies.length} companies`);
+    console.log('='.repeat(60));
+    console.log('');
+  });
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+}
+
+export default app;
