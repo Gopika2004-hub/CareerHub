@@ -2,7 +2,7 @@ const API_URL = "/api";
 
 // Fetch Companies
 export async function getCompanies(userId) {
-  const res = await fetch(`${API_URL}/companies.php`, {
+  const res = await fetch(`${API_URL}/companies`, {
     headers: { Authorization: `Bearer ${userId}` }
   });
   return res.json();
@@ -10,7 +10,7 @@ export async function getCompanies(userId) {
 
 // Fetch unique company names from actual job postings
 export async function getJobCompanies(userId) {
-  const res = await fetch(`${API_URL}/companies.php?from_jobs=1`, {
+  const res = await fetch(`${API_URL}/companies?from_jobs=1`, {
     headers: { Authorization: `Bearer ${userId}` }
   });
   return res.json();
@@ -22,7 +22,7 @@ export async function addNewCompany(userId, _, companyData) {
   formData.append('name', companyData.name);
   formData.append('logo', companyData.logo);
 
-  const res = await fetch(`${API_URL}/companies.php`, {
+  const res = await fetch(`${API_URL}/companies`, {
     method: 'POST',
     headers: { 
       Authorization: `Bearer ${userId}` 

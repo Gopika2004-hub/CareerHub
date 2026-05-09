@@ -35,7 +35,7 @@ export default function ResumePage() {
   async function loadProfile() {
     setPageLoading(true);
     try {
-      const res  = await fetch("/api/profile.php", {
+      const res  = await fetch("/api/profile", {
         headers: { Authorization: `Bearer ${uid}` },
       });
       const data = await res.json();
@@ -70,7 +70,7 @@ export default function ResumePage() {
       /* Step 1 — upload file, get filename back */
       const form = new FormData();
       form.append("resume", file);
-      const uploadRes  = await fetch("/api/upload-resume.php", {
+      const uploadRes  = await fetch("/api/upload-resume", {
         method: "POST",
         headers: { Authorization: `Bearer ${uid}` },
         body: form,
@@ -86,7 +86,7 @@ export default function ResumePage() {
       if (!uploadData.success) throw new Error(uploadData.error || "Upload failed");
 
       /* Step 2 — save filename to profile via existing profile endpoint */
-      const saveRes  = await fetch("/api/profile.php", {
+      const saveRes  = await fetch("/api/profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

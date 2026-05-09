@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   const [loading,     setLoading]     = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/stats.php", { headers: H })
+    fetch("/api/admin/stats", { headers: H })
       .then(r => r.json())
       .then(setStats)
       .catch(console.error)

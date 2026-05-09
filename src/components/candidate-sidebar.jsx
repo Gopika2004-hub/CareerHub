@@ -67,7 +67,7 @@ const CandidateSidebar = ({ customProfile }) => {
     try {
       const form = new FormData();
       form.append("photo", file);
-      const res = await fetch("/api/profile.php", {
+      const res = await fetch("/api/profile", {
         method: "POST",
         headers: { Authorization: `Bearer ${user.id}` },
         body: form,

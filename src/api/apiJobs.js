@@ -6,7 +6,7 @@ export async function getJobs(userId, options = {}, dynamicOptions = {}) {
     ...options,
     ...dynamicOptions,
   };
-  const url = new URL(`${API_URL}/jobs.php`, window.location.origin);
+  const url = new URL(`${API_URL}/jobs`, window.location.origin);
   if (state) url.searchParams.append("state", state);
   if (city) url.searchParams.append("city", city);
   if (company_name) url.searchParams.append("company_name", company_name);
@@ -21,7 +21,7 @@ export async function getJobs(userId, options = {}, dynamicOptions = {}) {
 
 // Read Saved Jobs
 export async function getSavedJobs(userId) {
-  const res = await fetch(`${API_URL}/saved-jobs.php`, {
+  const res = await fetch(`${API_URL}/saved-jobs`, {
     headers: { Authorization: `Bearer ${userId}` }
   });
   return res.json();
@@ -29,7 +29,7 @@ export async function getSavedJobs(userId) {
 
 // Read single job
 export async function getSingleJob(userId, { job_id }) {
-  const res = await fetch(`${API_URL}/jobs.php?id=${job_id}`, {
+  const res = await fetch(`${API_URL}/jobs?id=${job_id}`, {
     headers: { Authorization: `Bearer ${userId}` }
   });
   return res.json();
@@ -38,7 +38,7 @@ export async function getSingleJob(userId, { job_id }) {
 // TOGGLE SAVE JOB
 export async function saveJob(userId, { alreadySaved }, saveData) {
   const method = alreadySaved ? 'DELETE' : 'POST';
-  const res = await fetch(`${API_URL}/saved-jobs.php`, {
+  const res = await fetch(`${API_URL}/saved-jobs`, {
     method,
     headers: {
       'Content-Type': 'application/json',

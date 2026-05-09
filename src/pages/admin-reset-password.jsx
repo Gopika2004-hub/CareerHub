@@ -47,7 +47,7 @@ const AdminResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/admin/reset-password.php", {
+      const response = await fetch("/api/admin/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

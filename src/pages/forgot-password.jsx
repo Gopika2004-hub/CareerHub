@@ -32,7 +32,7 @@ const ForgotPassword = () => {
 
     try {
       // Block archived accounts from resetting password
-      const archiveRes = await fetch(`/api/check-archived.php?email=${encodeURIComponent(email)}`);
+      const archiveRes = await fetch(`/api/check-archived?email=${encodeURIComponent(email)}`);
       const archiveData = await archiveRes.json();
       if (archiveData.archived) {
         setError("Your account has been suspended. Please contact the admin or complete a new registration.");

@@ -31,7 +31,7 @@ function SavedJobCard({ saved, uid, onRemove }) {
     e.preventDefault();
     setRemoving(true);
     try {
-      await fetch("/api/saved-jobs.php", {
+      await fetch("/api/saved-jobs", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

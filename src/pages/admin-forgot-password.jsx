@@ -29,7 +29,7 @@ const AdminForgotPassword = () => {
     setEmailError("");
 
     try {
-      const res = await fetch("/api/admin/forgot-password.php", {
+      const res = await fetch("/api/admin/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -64,7 +64,7 @@ const AdminForgotPassword = () => {
     setError("");
 
     try {
-      const res = await fetch("/api/admin/verify-otp.php", {
+      const res = await fetch("/api/admin/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp: code }),
@@ -104,7 +104,7 @@ const AdminForgotPassword = () => {
     setError("");
 
     try {
-      const res = await fetch("/api/admin/reset-password.php", {
+      const res = await fetch("/api/admin/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: serverToken, password: newPassword }),

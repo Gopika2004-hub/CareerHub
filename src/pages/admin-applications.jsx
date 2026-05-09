@@ -83,7 +83,7 @@ export default function AdminApplications() {
   const [viewing, setViewing] = useState(null);
 
   useEffect(() => {
-    fetch("/api/admin/applications.php", { headers: H })
+    fetch("/api/admin/applications", { headers: H })
       .then(r => r.json())
       .then(setRows)
       .catch(console.error)
@@ -92,7 +92,7 @@ export default function AdminApplications() {
 
   async function handleDelete(job_id) {
     if (!window.confirm("Delete this job posting and all its applications?")) return;
-    const res  = await fetch(`/api/admin/applications.php?job_id=${job_id}`, {
+    const res  = await fetch(`/api/admin/applications?job_id=${job_id}`, {
       method: "DELETE",
       headers: H,
     });

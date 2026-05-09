@@ -33,7 +33,7 @@ const ProtectedRoute = ({ children }) => {
     if (checkingRef.current) return;
     checkingRef.current = true;
 
-    fetch(`/api/check-archived.php?user_id=${encodeURIComponent(user.id)}`)
+    fetch(`/api/check-archived?user_id=${encodeURIComponent(user.id)}`)
       .then(r => r.json())
       .then(data => {
         const archived = data.archived === true;

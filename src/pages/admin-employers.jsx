@@ -155,7 +155,7 @@ export default function AdminEmployers() {
   const [deleting, setDeleting] = useState(null); // employer row to delete
 
   useEffect(() => {
-    fetch("/api/admin/employers.php", { headers: H })
+    fetch("/api/admin/employers", { headers: H })
       .then(r => r.json())
       .then(data => setRows(Array.isArray(data) ? data : []))
       .catch(console.error)
@@ -166,14 +166,14 @@ export default function AdminEmployers() {
   async function handleDeleteJob(job_id) {
     if (!job_id) return;
     if (!window.confirm("Delete this job and all its applications?")) return;
-    const res  = await fetch(`/api/admin/employers.php?job_id=${job_id}`, { method: "DELETE", headers: H });
+    const res  = await fetch(`/api/admin/employers?job_id=${job_id}`, { method: "DELETE", headers: H });
     const data = await res.json();
     if (data.success) setRows(r => r.filter(j => j.job_id !== job_id));
   }
 
   // Archive + delete entire employer
   async function handleDeleteEmployer(recruiter_id, reason) {
-    const res = await fetch(`/api/admin/employer-full.php?recruiter_id=${recruiter_id}`, {
+    const res = await fetch(`/api/admin/employer-full?recruiter_id=${recruiter_id}`, {
       method: "DELETE",
       headers: H,
       body: JSON.stringify({ reason }),

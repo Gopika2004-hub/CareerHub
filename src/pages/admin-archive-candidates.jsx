@@ -22,7 +22,7 @@ function CandidateArchiveRow({ record, onRestore, onPermanentlyBlock }) {
     if (!confirm(`Restore access for ${profile.full_name || 'this candidate'}? They will be able to log in again.`)) return;
     setActionLoading("restore");
     try {
-      const res = await fetch("/api/admin/lift-access.php", {
+      const res = await fetch("/api/admin/lift-access", {
         method: "POST",
         headers: { ...H, "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: record.candidate_id, type: "candidate" }),
@@ -40,7 +40,7 @@ function CandidateArchiveRow({ record, onRestore, onPermanentlyBlock }) {
     if (!confirm(`Permanently block ${profile.full_name || 'this candidate'}? They will never be able to log in with this account.`)) return;
     setActionLoading("block");
     try {
-      const res = await fetch("/api/admin/permanently-block.php", {
+      const res = await fetch("/api/admin/permanently-block", {
         method: "POST",
         headers: { ...H, "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: record.candidate_id, type: "candidate" }),
@@ -184,7 +184,7 @@ export default function AdminArchiveCandidates() {
   const [toast,   setToast]   = useState(null);
 
   useEffect(() => {
-    fetch("/api/admin/archives.php?type=candidates", { headers: H })
+    fetch("/api/admin/archives?type=candidates", { headers: H })
       .then(r => r.json())
       .then(data => setRecords(Array.isArray(data) ? data : []))
       .catch(console.error)

@@ -51,7 +51,7 @@ const CandidateRegister = () => {
         const userId = completeSignUp.createdUserId;
         if (userId) {
           try {
-            await fetch("/api/profile.php", {
+            await fetch("/api/profile", {
               method: "POST",
               headers: { "Authorization": `Bearer ${userId}`, "Content-Type": "application/json" },
               body: JSON.stringify({ full_name: firstName, email: emailAddress, mobile: mobileNumber }),

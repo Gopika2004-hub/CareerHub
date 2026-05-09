@@ -49,7 +49,7 @@ const JobCard = ({
 
     try {
       const method = saved ? "DELETE" : "POST";
-      const res = await fetch("/api/saved-jobs.php", {
+      const res = await fetch("/api/saved-jobs", {
         method,
         headers: {
           "Content-Type": "application/json",

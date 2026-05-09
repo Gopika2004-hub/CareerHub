@@ -29,7 +29,7 @@ export default function AdminSidebar() {
   const fileRef = useRef(null);
 
   useEffect(() => {
-    fetch("/api/admin/logo.php", { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } })
+    fetch("/api/admin/logo", { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } })
       .then(r => r.json())
       .then(data => setLogo(data.logo || ""))
       .catch(console.error);
@@ -47,7 +47,7 @@ export default function AdminSidebar() {
     try {
       const form = new FormData();
       form.append("logo", file);
-      const res = await fetch("/api/admin/logo.php", { method: "POST", headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }, body: form });
+      const res = await fetch("/api/admin/logo", { method: "POST", headers: { Authorization: `Bearer ${ADMIN_TOKEN}` }, body: form });
       const data = await res.json();
       if (data.logo) setLogo(data.logo);
     } catch (err) {

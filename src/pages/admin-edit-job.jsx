@@ -102,7 +102,7 @@ export default function AdminEditJob() {
 
   useEffect(() => {
     if (!jobId) { setLoading(false); return; }
-    fetch(`/api/jobs.php?id=${jobId}`, { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } })
+    fetch(`/api/jobs?id=${jobId}`, { headers: { Authorization: `Bearer ${ADMIN_TOKEN}` } })
       .then(r => r.json())
       .then(job => {
         setValue("job_title",            job.title                || "");
@@ -191,7 +191,7 @@ export default function AdminEditJob() {
         formData.append("company_logo", logoFile);
       }
 
-      const res = await fetch(`/api/jobs.php?id=${jobId}`, {
+      const res = await fetch(`/api/jobs?id=${jobId}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${ADMIN_TOKEN}` },
         body: formData,

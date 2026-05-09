@@ -95,7 +95,7 @@ export default function AdminCandidates() {
   const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
-    fetch("/api/admin/candidates.php", { headers: H })
+    fetch("/api/admin/candidates", { headers: H })
       .then(r => r.json())
       .then(setRows)
       .catch(console.error)
@@ -103,7 +103,7 @@ export default function AdminCandidates() {
   }, []);
 
   async function handleDeleteCandidate(candidate_id, reason) {
-    const res = await fetch(`/api/admin/candidate-full.php?candidate_id=${candidate_id}`, {
+    const res = await fetch(`/api/admin/candidate-full?candidate_id=${candidate_id}`, {
       method: "DELETE",
       headers: H,
       body: JSON.stringify({ reason }),

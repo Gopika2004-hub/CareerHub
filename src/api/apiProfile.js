@@ -2,7 +2,7 @@ const API_URL = "/api";
 
 export async function getProfile(userId) {
   try {
-    const res = await fetch(`${API_URL}/profile.php`, {
+    const res = await fetch(`${API_URL}/profile`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${userId}`,
@@ -43,7 +43,7 @@ export async function updateProfile(userId, profileData) {
       body = JSON.stringify(profileData);
     }
 
-    const res = await fetch(`${API_URL}/profile.php`, {
+    const res = await fetch(`${API_URL}/profile`, {
       method: "POST",
       headers,
       body,

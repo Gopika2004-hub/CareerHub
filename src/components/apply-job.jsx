@@ -81,7 +81,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
       if (formData.resumeFile) {
         const fileData = new FormData();
         fileData.append('resume', formData.resumeFile);
-        const uploadRes = await fetch(`/api/upload-resume.php`, {
+        const uploadRes = await fetch(`/api/upload-resume`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${userId}` },
           body: fileData
