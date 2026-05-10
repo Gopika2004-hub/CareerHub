@@ -1,4 +1,4 @@
-import { useUser, useClerk } from "@clerk/clerk-react";
+﻿import { useUser, useClerk } from "@/lib/auth";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
@@ -14,7 +14,7 @@ import { getMyJobs, deleteJob } from "@/api/apiJobs";
 
 const API = "/api";
 
-/* ─── Status pill ──────────────────────────────────────────────────────────── */
+/* â”€â”€â”€ Status pill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function StatusBadge({ status }) {
   const s = (status || "applied").toLowerCase();
   const cls =
@@ -28,13 +28,13 @@ function StatusBadge({ status }) {
   );
 }
 
-/* ─── One application row ──────────────────────────────────────────────────── */
+/* â”€â”€â”€ One application row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function ApplicationRow({ app, uid, onDelete }) {
   const [sel, setSel] = useState(app.status || "applied");
   const [cur, setCur] = useState(app.status || "applied");
   const [updating, setUpdating] = useState(false);
 
-  /* ── update status ── */
+  /* â”€â”€ update status â”€â”€ */
   async function handleUpdate() {
     if (sel === cur || updating) return;
     setUpdating(true);
@@ -55,7 +55,7 @@ function ApplicationRow({ app, uid, onDelete }) {
     setUpdating(false);
   }
 
-  /* ── delete — tell parent; parent removes from state immediately ── */
+  /* â”€â”€ delete â€” tell parent; parent removes from state immediately â”€â”€ */
   function handleDelete() {
     onDelete(app.id);
   }
@@ -65,31 +65,31 @@ function ApplicationRow({ app, uid, onDelete }) {
 
       {/* CANDIDATE */}
       <td className="px-5 py-4 border border-slate-200 min-w-[220px]">
-        <p className="font-bold text-[#1e293b] text-[15px] mb-2">{app.name || "—"}</p>
+        <p className="font-bold text-[#1e293b] text-[15px] mb-2">{app.name || "â€”"}</p>
         <div className="flex items-center gap-1.5 text-sm text-slate-600 mb-1.5">
           <Mail size={14} className="shrink-0 text-slate-400" />
-          <span>{app.email || "—"}</span>
+          <span>{app.email || "â€”"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-sm text-slate-600 mb-1.5">
           <Phone size={14} className="shrink-0 text-slate-400" />
-          <span>{app.phone || "—"}</span>
+          <span>{app.phone || "â€”"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-[13px] text-slate-500 mb-1.5">
           <Clock size={14} className="shrink-0 text-slate-400" />
-          <span>Available: {app.availability || "—"}</span>
+          <span>Available: {app.availability || "â€”"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-[13px] text-slate-500">
           <IndianRupee size={14} className="shrink-0 text-slate-400" />
           <span>
             {app.expected_salary
-              ? `Expected: ₹${Number(app.expected_salary).toLocaleString("en-IN")}/mo`
-              : "Expected: —"}
+              ? `Expected: â‚¹${Number(app.expected_salary).toLocaleString("en-IN")}/mo`
+              : "Expected: â€”"}
           </span>
         </div>
       </td>
 
       {/* JOB APPLIED */}
-      <td className="px-5 py-4 border border-slate-200 font-medium text-slate-700">{app.job_title || "—"}</td>
+      <td className="px-5 py-4 border border-slate-200 font-medium text-slate-700">{app.job_title || "â€”"}</td>
 
       {/* APPLIED ON */}
       <td className="px-5 py-4 border border-slate-200 text-sm text-slate-600 whitespace-nowrap">
@@ -97,7 +97,7 @@ function ApplicationRow({ app, uid, onDelete }) {
           ? new Date(app.created_at).toLocaleDateString("en-GB", {
             day: "2-digit", month: "short", year: "numeric",
           })
-          : "—"}
+          : "â€”"}
       </td>
 
       {/* RESUME */}
@@ -142,7 +142,7 @@ function ApplicationRow({ app, uid, onDelete }) {
                        text-white text-[13px] font-semibold px-3 py-1.5 rounded-md
                        transition-colors whitespace-nowrap shadow-sm"
           >
-            {updating ? "Saving…" : "✓ Update"}
+            {updating ? "Savingâ€¦" : "âœ“ Update"}
           </button>
 
           <button
@@ -159,7 +159,7 @@ function ApplicationRow({ app, uid, onDelete }) {
   );
 }
 
-/* ─── Employer Dashboard ───────────────────────────────────────────────────── */
+/* â”€â”€â”€ Employer Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function EmployerDashboard() {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
@@ -177,7 +177,7 @@ export default function EmployerDashboard() {
   const [empPhoto, setEmpPhoto] = useState("");
   const [photoUploading, setPhotoUploading] = useState(false);
 
-  /* applications — fetched directly so recruiter_id is always current */
+  /* applications â€” fetched directly so recruiter_id is always current */
   const [apps, setApps] = useState([]);
   const [loadingApps, setLoadingApps] = useState(false);
 
@@ -199,9 +199,9 @@ export default function EmployerDashboard() {
     setLoadingApps(false);
   }
 
-  /* ── delete: remove from UI immediately, then hit API ── */
+  /* â”€â”€ delete: remove from UI immediately, then hit API â”€â”€ */
   async function handleDeleteApp(appId) {
-    /* 1. Remove from local state right away — UI updates instantly */
+    /* 1. Remove from local state right away â€” UI updates instantly */
     setApps(prev => prev.filter(a => a.id !== appId));
 
     /* 2. Call the server in the background */
@@ -215,7 +215,7 @@ export default function EmployerDashboard() {
       const data = await res.json();
       console.log("DELETE result:", data);
     } catch (e) {
-      /* Network error — restore list from server */
+      /* Network error â€” restore list from server */
       console.error("DELETE failed, restoring:", e);
       loadApps();
     }
@@ -343,9 +343,9 @@ export default function EmployerDashboard() {
 
         <header className="mb-10">
           <h1 className="text-3xl font-bold text-slate-900 mb-1">
-            Welcome, {name}! 👋
+            Welcome, {name}! ðŸ‘‹
           </h1>
-          <p className="text-slate-500">{company} — Employer Dashboard</p>
+          <p className="text-slate-500">{company} â€” Employer Dashboard</p>
         </header>
 
         {/* Stats */}

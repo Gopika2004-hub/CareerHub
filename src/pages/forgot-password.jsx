@@ -1,6 +1,6 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { useSignIn, useClerk } from "@clerk/clerk-react";
+import { useSignIn, useClerk } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -131,7 +131,7 @@ const ForgotPassword = () => {
       });
 
       if (result.status === "complete") {
-        setSuccessMessage("Password updated! Signing out active sessions — please log in again.");
+        setSuccessMessage("Password updated! Signing out active sessions â€” please log in again.");
         // Sign out the session Clerk auto-created on reset, then redirect to fresh login
         await signOut();
         setTimeout(() => navigate(loginPath), 2000);

@@ -91,7 +91,41 @@ let employers = [];
 let nextEmployerId = 1;
 let employerArchives = [];
 let candidateArchives = [];
+let users = [];
 let ADMIN_PASSWORD = 'Bala@2004'; // persisted to db.json on reset
+
+// ==================== CUSTOM AUTH UTILS ====================
+const AUTH_SECRET = process.env.JWT_SECRET || 'careerhub-auth-secret-2026-stable';
+
+function signAuthToken(payload) {
+  const data = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const sig = crypto.createHmac('sha256', AUTH_SECRET).update(data).digest('base64url');
+  return `${data}.${sig}`;
+}
+
+function verifyAuthToken(token) {
+  if (!token || !token.includes('.')) return null;
+  const dot = token.lastIndexOf('.');
+  const data = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto.createHmac('sha256', AUTH_SECRET).update(data).digest('base64url');
+  if (sig !== expected) return null;
+  try { return JSON.parse(Buffer.from(data, 'base64url').toString()); } catch { return null; }
+}
+
+function hashPwd(password, salt) {
+  return crypto.scryptSync(password, salt, 64).toString('hex');
+}
+function makeSalt() { return crypto.randomBytes(16).toString('hex'); }
+function checkPwd(password, salt, hash) { return hashPwd(password, salt) === hash; }
+
+function safeUser(u) {
+  if (!u) return null;
+  const { passwordHash, salt, ...safe } = u;
+  return safe;
+}
+
+const otpStore = {};
 
 function saveDb() {
   try {
@@ -110,6 +144,7 @@ function saveDb() {
       nextEmployerId,
       employerArchives,
       candidateArchives,
+      users,
       adminPassword: ADMIN_PASSWORD,
     };
     const jsonStr = JSON.stringify(data, null, 2);
@@ -155,6 +190,7 @@ function loadDb() {
     nextEmployerId = data.nextEmployerId || 1;
     employerArchives = data.employerArchives || [];
     candidateArchives = data.candidateArchives || [];
+    users = data.users || [];
     if (data.adminPassword) ADMIN_PASSWORD = data.adminPassword;
     console.log(`✅ [DB LOADED] Successfully loaded db.json:`);
     console.log(`   📋 Jobs: ${jobs.length}`);
@@ -184,15 +220,137 @@ process.on('exit', () => {
   if (!process.env.VERCEL) console.log('🔚 [EXIT] Process exiting.');
 });
 
-// Token verification middleware
+// Token verification middleware — supports both custom signed tokens and legacy Clerk/plain IDs
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  req.userId = authHeader.replace('Bearer ', '');
+  const raw = authHeader.slice(7);
+  const payload = verifyAuthToken(raw);
+  req.userId = payload ? payload.userId : raw;
   next();
 }
+
+// Auth middleware that requires a valid custom token and sets req.currentUser
+function requireAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ error: 'Unauthorized' });
+  const payload = verifyAuthToken(authHeader.slice(7));
+  if (!payload) return res.status(401).json({ error: 'Invalid token' });
+  const user = users.find(u => u.id === payload.userId);
+  if (!user) return res.status(401).json({ error: 'User not found' });
+  req.currentUser = user;
+  req.userId = user.id;
+  next();
+}
+
+// ==================== CUSTOM AUTH ENDPOINTS ====================
+
+app.post('/backend/auth/login.php', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ success: false, error: 'Email and password required' });
+  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  if (!user || !checkPwd(password, user.salt, user.passwordHash)) {
+    return res.status(401).json({ success: false, error: 'Invalid email or password' });
+  }
+  const token = signAuthToken({ userId: user.id, email: user.email, role: user.role });
+  res.json({ success: true, token, user: safeUser(user) });
+});
+
+app.post('/backend/auth/register.php', (req, res) => {
+  const { email, password, firstName, role, company, mobile } = req.body;
+  if (!email || !password) return res.status(400).json({ success: false, error: 'Email and password required' });
+  if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    return res.status(409).json({ success: false, error: 'Email already registered' });
+  }
+  const salt = makeSalt();
+  const newUser = {
+    id: `user_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
+    email: email.toLowerCase(),
+    firstName: firstName || '',
+    lastName: '',
+    passwordHash: hashPwd(password, salt),
+    salt,
+    role: role || 'candidate',
+    company: company || '',
+    mobile: mobile || '',
+    created_at: new Date().toISOString(),
+  };
+  users.push(newUser);
+  saveDb();
+  const token = signAuthToken({ userId: newUser.id, email: newUser.email, role: newUser.role });
+  res.json({ success: true, token, user: safeUser(newUser) });
+});
+
+app.get('/backend/auth/me.php', requireAuth, (req, res) => {
+  res.json({ success: true, user: safeUser(req.currentUser) });
+});
+
+app.patch('/backend/auth/update.php', requireAuth, (req, res) => {
+  const { unsafeMetadata } = req.body;
+  const idx = users.findIndex(u => u.id === req.currentUser.id);
+  if (idx === -1) return res.status(404).json({ success: false, error: 'User not found' });
+  if (unsafeMetadata?.role) users[idx].role = unsafeMetadata.role;
+  if (unsafeMetadata?.company !== undefined) users[idx].company = unsafeMetadata.company;
+  if (unsafeMetadata?.mobile !== undefined) users[idx].mobile = unsafeMetadata.mobile;
+  saveDb();
+  res.json({ success: true, user: safeUser(users[idx]) });
+});
+
+app.post('/backend/auth/forgot-password.php', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ success: false, error: 'Email required' });
+  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+  if (!user) return res.json({ success: false, error: 'No account found with this email' });
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore[email.toLowerCase()] = { otp, expires: Date.now() + 10 * 60 * 1000 };
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD },
+    });
+    await transporter.sendMail({
+      from: `"CareerHub" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: 'CareerHub — Password Reset Code',
+      html: `<p>Your password reset code is: <strong style="font-size:24px">${otp}</strong></p><p>This code expires in 10 minutes.</p>`,
+    });
+    res.json({ success: true });
+  } catch (e) {
+    console.error('OTP email error:', e.message);
+    res.json({ success: false, error: 'Failed to send email. Please try again.' });
+  }
+});
+
+app.post('/backend/auth/verify-otp.php', (req, res) => {
+  const { email, otp } = req.body;
+  const stored = otpStore[email?.toLowerCase()];
+  if (!stored || Date.now() > stored.expires) {
+    return res.json({ success: false, error: 'Code expired. Please request a new one.' });
+  }
+  if (stored.otp !== String(otp)) {
+    return res.json({ success: false, error: 'Invalid code. Please try again.' });
+  }
+  const otpToken = signAuthToken({ email: email.toLowerCase(), purpose: 'reset', exp: Date.now() + 15 * 60 * 1000 });
+  res.json({ success: true, otpToken });
+});
+
+app.post('/backend/auth/reset-password.php', (req, res) => {
+  const { email, otpToken, newPassword } = req.body;
+  const payload = verifyAuthToken(otpToken);
+  if (!payload || payload.email !== email?.toLowerCase() || payload.purpose !== 'reset' || Date.now() > payload.exp) {
+    return res.json({ success: false, error: 'Invalid or expired reset session. Please start over.' });
+  }
+  const idx = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+  if (idx === -1) return res.json({ success: false, error: 'User not found' });
+  const salt = makeSalt();
+  users[idx].passwordHash = hashPwd(newPassword, salt);
+  users[idx].salt = salt;
+  saveDb();
+  delete otpStore[email.toLowerCase()];
+  res.json({ success: true });
+});
 
 // ==================== COMPANIES ====================
 app.get('/backend/companies.php', (req, res) => {

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+﻿/* eslint-disable react/prop-types */
 import { Heart, MapPinIcon, Trash2Icon, PencilIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -11,7 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import useFetch from "@/hooks/use-fetch";
 import { deleteJob } from "@/api/apiJobs";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@/lib/auth";
 import { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 
@@ -27,7 +27,7 @@ const JobCard = ({
   // Guard: job deleted or missing
   if (!job || !job.id) return null;
 
-  // ❤️ local UI state
+  // â¤ï¸ local UI state
   const [saved, setSaved] = useState(savedInit);
 
   // delete job (recruiter)
@@ -42,7 +42,7 @@ const JobCard = ({
     setSaved(savedInit);
   }, [savedInit]);
 
-  // ❤️ SAVE / REMOVE JOB
+  // â¤ï¸ SAVE / REMOVE JOB
   const handleSaveJob = async () => {
     if (!user || loadingSavedJob) return;
     setLoadingSavedJob(true);
@@ -72,7 +72,7 @@ const JobCard = ({
     }
   };
 
-  // 🗑 delete job
+  // ðŸ—‘ delete job
   const handleDeleteJob = async () => {
     await fnDeleteJob();
     onJobAction();
@@ -84,7 +84,7 @@ const JobCard = ({
       : `/${job.company_logo}`
     : job?.company?.logo_url;
 
-  // ✅ Build location string from state/city
+  // âœ… Build location string from state/city
   const locationText = job.state && job.city
     ? `${job.state}, ${job.city}`
     : job.city || job.state || job.location || "Location not specified";

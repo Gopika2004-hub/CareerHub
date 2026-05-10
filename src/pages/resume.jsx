@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useUser } from "@clerk/clerk-react";
+﻿import { useEffect, useRef, useState } from "react";
+import { useUser } from "@/lib/auth";
 import { BarLoader } from "react-spinners";
 import { FileText, Download, RefreshCw, Upload } from "lucide-react";
 import CandidateSidebar from "@/components/candidate-sidebar";
@@ -12,7 +12,7 @@ const ALLOWED_TYPES = [
 ];
 
 const RESUME_TIPS = [
-  "Keep your resume to 1–2 pages maximum.",
+  "Keep your resume to 1â€“2 pages maximum.",
   "Use clear section headings: Summary, Experience, Education, Skills.",
   "Tailor your resume for each job application.",
   'Include measurable achievements (e.g., "Increased sales by 30%").',
@@ -31,7 +31,7 @@ export default function ResumePage() {
 
   const uid = user?.id || "test-user-123";
 
-  /* ── load existing resume from profile ── */
+  /* â”€â”€ load existing resume from profile â”€â”€ */
   async function loadProfile() {
     setPageLoading(true);
     try {
@@ -50,7 +50,7 @@ export default function ResumePage() {
     if (isLoaded) loadProfile();
   }, [isLoaded]); // eslint-disable-line
 
-  /* ── upload handler ── */
+  /* â”€â”€ upload handler â”€â”€ */
   async function handleFileChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -67,7 +67,7 @@ export default function ResumePage() {
 
     setUploading(true);
     try {
-      /* Step 1 — upload file, get filename back */
+      /* Step 1 â€” upload file, get filename back */
       const form = new FormData();
       form.append("resume", file);
       const uploadRes  = await fetch("/api/upload-resume", {
@@ -85,7 +85,7 @@ export default function ResumePage() {
       }
       if (!uploadData.success) throw new Error(uploadData.error || "Upload failed");
 
-      /* Step 2 — save filename to profile via existing profile endpoint */
+      /* Step 2 â€” save filename to profile via existing profile endpoint */
       const saveRes  = await fetch("/api/profile", {
         method: "POST",
         headers: {
@@ -133,10 +133,10 @@ export default function ResumePage() {
             </p>
           </div>
 
-          {/* ── Upload / Preview card ── */}
+          {/* â”€â”€ Upload / Preview card â”€â”€ */}
           <div className="bg-white border border-gray-200 rounded-2xl p-10">
             {resumeFilename ? (
-              /* ── Uploaded state — matches reference ── */
+              /* â”€â”€ Uploaded state â€” matches reference â”€â”€ */
               <div className="flex flex-col items-center gap-5">
 
                 {/* Document icon */}
@@ -148,7 +148,7 @@ export default function ResumePage() {
                 <div className="text-center">
                   <h2 className="text-xl font-bold text-gray-900 flex items-center justify-center gap-2">
                     Your Resume is Uploaded
-                    <span className="text-xl">✅</span>
+                    <span className="text-xl">âœ…</span>
                   </h2>
                   <p className="text-sm text-gray-400 mt-1 break-all">{resumeFilename}</p>
                 </div>
@@ -172,13 +172,13 @@ export default function ResumePage() {
                                font-semibold text-sm transition-colors px-2 py-3"
                   >
                     <RefreshCw size={16} />
-                    {uploading ? "Uploading…" : "Update Resume"}
+                    {uploading ? "Uploadingâ€¦" : "Update Resume"}
                   </button>
                 </div>
 
               </div>
             ) : (
-              /* ── No resume state — matches reference ── */
+              /* â”€â”€ No resume state â€” matches reference â”€â”€ */
               <div className="flex flex-col items-center py-4 gap-4">
 
                 <div className="w-20 h-20 flex items-center justify-center">
@@ -188,7 +188,7 @@ export default function ResumePage() {
                 <div className="text-center">
                   <p className="text-xl font-bold text-gray-800 mb-2">No Resume Uploaded</p>
                   <p className="text-sm text-gray-500">
-                    Upload your resume (PDF, DOC, DOCX — max {MAX_SIZE_MB}MB) to apply quickly.
+                    Upload your resume (PDF, DOC, DOCX â€” max {MAX_SIZE_MB}MB) to apply quickly.
                   </p>
                 </div>
 
@@ -200,7 +200,7 @@ export default function ResumePage() {
                              transition-colors mt-2"
                 >
                   <Upload size={16} />
-                  {uploading ? "Uploading…" : "+ Upload Resume"}
+                  {uploading ? "Uploadingâ€¦" : "+ Upload Resume"}
                 </button>
 
               </div>
@@ -210,7 +210,7 @@ export default function ResumePage() {
             {uploading && (
               <div className="mt-6">
                 <BarLoader width="100%" color="#00529b" />
-                <p className="text-xs text-center text-gray-400 mt-1">Uploading your resume…</p>
+                <p className="text-xs text-center text-gray-400 mt-1">Uploading your resumeâ€¦</p>
               </div>
             )}
 
@@ -229,9 +229,9 @@ export default function ResumePage() {
             />
           </div>
 
-          {/* ── Resume Tips ── */}
+          {/* â”€â”€ Resume Tips â”€â”€ */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">📝 Resume Tips</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">ðŸ“ Resume Tips</h2>
             <ul className="space-y-2.5">
               {RESUME_TIPS.map((tip) => (
                 <li key={tip} className="flex items-start gap-2.5 text-sm text-[#0a66c2]">

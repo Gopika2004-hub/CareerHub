@@ -1,6 +1,6 @@
-import { getSavedJobs, saveJob } from "@/api/apiJobs";
+﻿import { getSavedJobs, saveJob } from "@/api/apiJobs";
 import useFetch from "@/hooks/use-fetch";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@/lib/auth";
 import { useEffect, useMemo, useState } from "react";
 import { BarLoader } from "react-spinners";
 import { Link } from "react-router-dom";
@@ -143,7 +143,7 @@ function SavedJobCard({ saved, uid, onRemove }) {
             </span>
             <Link to={`/job/${job.id}`}>
               <button className="bg-[#1e293b] hover:bg-slate-700 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors">
-                Apply Now →
+                Apply Now â†’
               </button>
             </Link>
           </div>

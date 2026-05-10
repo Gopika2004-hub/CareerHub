@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useUser } from "@clerk/clerk-react";
+﻿import { useEffect, useState } from "react";
+import { useUser } from "@/lib/auth";
 import { BarLoader } from "react-spinners";
 import { Heart, Eye, Briefcase, Target, ClipboardList, PenLine, Search, Home, User, FileText } from "lucide-react";
 import useFetch from "@/hooks/use-fetch";
@@ -88,7 +88,7 @@ const CandidateDashboard = () => {
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-[28px] font-bold text-gray-900 mb-1.5 flex items-center">
-                Welcome back, {userFullName}! <span className="ml-2 text-3xl">👋</span>
+                Welcome back, {userFullName}! <span className="ml-2 text-3xl">ðŸ‘‹</span>
               </h1>
               <p className="text-[15px] text-gray-500">
                 Here&apos;s your job search activity summary.
@@ -182,7 +182,7 @@ const CandidateDashboard = () => {
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      e.target.parentNode.innerHTML = '<div class="w-full h-full flex flex-col items-center justify-end bg-gradient-to-t from-[#c9efdf] to-[#e6f4fb]"><div class="flex items-end gap-2 mb-8"><div class="w-32 h-32 bg-[#c89b7b] rounded-[2rem] flex items-center justify-center text-5xl shadow-sm relative"><span class="absolute bottom-2 text-pink-300">👅</span></div><div class="w-28 h-28 bg-white rounded-[2rem] flex items-center justify-center text-5xl shadow-sm relative"><span class="absolute bottom-2 text-pink-300">👅</span></div></div></div>';
+                      e.target.parentNode.innerHTML = '<div class="w-full h-full flex flex-col items-center justify-end bg-gradient-to-t from-[#c9efdf] to-[#e6f4fb]"><div class="flex items-end gap-2 mb-8"><div class="w-32 h-32 bg-[#c89b7b] rounded-[2rem] flex items-center justify-center text-5xl shadow-sm relative"><span class="absolute bottom-2 text-pink-300">ðŸ‘…</span></div><div class="w-28 h-28 bg-white rounded-[2rem] flex items-center justify-center text-5xl shadow-sm relative"><span class="absolute bottom-2 text-pink-300">ðŸ‘…</span></div></div></div>';
                     }}
                   />
                 </div>
@@ -246,10 +246,10 @@ const CandidateDashboard = () => {
                     {applications.slice(0, 5).map((application) => (
                       <tr key={application.id} className="border-b border-gray-200 last:border-0 hover:bg-gray-50 transition-colors">
                         <td className="py-4 px-6 text-[14px] text-gray-700 border-r border-gray-200">
-                          {application.job_title && application.job_title !== '—' ? application.job_title : (application?.job?.title || "Job Title")}
+                          {application.job_title && application.job_title !== 'â€”' ? application.job_title : (application?.job?.title || "Job Title")}
                         </td>
                         <td className="py-4 px-6 text-[14px] text-gray-600 border-r border-gray-200">
-                          {application.company_name && application.company_name !== '—' ? application.company_name : (application?.job?.company?.name || "Company")}
+                          {application.company_name && application.company_name !== 'â€”' ? application.company_name : (application?.job?.company?.name || "Company")}
                         </td>
                         <td className="py-4 px-6 text-[14px] text-gray-600 border-r border-gray-200">
                           {(application.applied_date || application.created_at)

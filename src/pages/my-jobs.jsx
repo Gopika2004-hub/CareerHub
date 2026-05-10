@@ -1,6 +1,6 @@
-import CreatedApplications from "@/components/created-applications";
+﻿import CreatedApplications from "@/components/created-applications";
 import CreatedJobs from "@/components/created-jobs";
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@/lib/auth";
 import { BarLoader } from "react-spinners";
 import CandidateSidebar from "@/components/candidate-sidebar";
 import { useEffect } from "react";
@@ -49,7 +49,7 @@ const MyJobs = () => {
     );
   }
 
-  // Employer view — with sidebar
+  // Employer view â€” with sidebar
   const name    = user?.firstName || "Employer";
   const company = user?.unsafeMetadata?.company || "Your Company";
 

@@ -1,4 +1,4 @@
-import { useUser, useClerk } from "@clerk/clerk-react";
+﻿import { useUser, useClerk } from "@/lib/auth";
 import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Briefcase, Users, Settings,
@@ -182,7 +182,7 @@ const EmployerSettings = () => {
 
         <div className="max-w-3xl space-y-8 pb-12">
 
-          {/* ── Company Profile ── */}
+          {/* â”€â”€ Company Profile â”€â”€ */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-5 border-b bg-slate-50">
               <Building2 className="text-blue-600" size={22} />
@@ -249,13 +249,13 @@ const EmployerSettings = () => {
 
               <div className="flex justify-end pt-1">
                 <Button type="submit" variant="blue" disabled={savingProfile}>
-                  {savingProfile ? "Saving…" : "Save Profile"}
+                  {savingProfile ? "Savingâ€¦" : "Save Profile"}
                 </Button>
               </div>
             </form>
           </div>
 
-          {/* ── Change Password ── */}
+          {/* â”€â”€ Change Password â”€â”€ */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-5 border-b bg-slate-50">
               <Lock className="text-blue-600" size={22} />
@@ -311,13 +311,13 @@ const EmployerSettings = () => {
 
               <div className="flex justify-end pt-1">
                 <Button type="submit" variant="blue" disabled={savingPassword}>
-                  {savingPassword ? "Updating…" : "Update Password"}
+                  {savingPassword ? "Updatingâ€¦" : "Update Password"}
                 </Button>
               </div>
             </form>
           </div>
 
-          {/* ── Email Display ── */}
+          {/* â”€â”€ Email Display â”€â”€ */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-5 border-b bg-slate-50">
               <Mail className="text-blue-600" size={22} />
@@ -331,12 +331,12 @@ const EmployerSettings = () => {
                 Your login email is managed by Clerk. To change it, please contact support.
               </p>
               <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700">
-                {user?.emailAddresses?.[0]?.emailAddress || "—"}
+                {user?.emailAddresses?.[0]?.emailAddress || "â€”"}
               </div>
             </div>
           </div>
 
-          {/* ── Delete Account ── */}
+          {/* â”€â”€ Delete Account â”€â”€ */}
           <div className="bg-red-50/30 rounded-2xl shadow-sm border border-red-200 overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-5 border-b border-red-100 bg-red-50">
               <AlertTriangle className="text-red-600" size={22} />

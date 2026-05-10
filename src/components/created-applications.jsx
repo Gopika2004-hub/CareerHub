@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/clerk-react";
+﻿import { useUser } from "@/lib/auth";
 import { useEffect } from "react";
 import { getApplications } from "@/api/apiApplication";
 import useFetch from "@/hooks/use-fetch";
@@ -51,13 +51,13 @@ const CreatedApplications = () => {
                 {applications.map((application) => (
                   <tr key={application.id} className="border-b border-gray-200 last:border-0 hover:bg-gray-50 transition-colors">
                     <td className="py-4 px-6 text-[14px] font-bold text-[#1E40AF] border-r border-gray-200">
-                      {application.job_title && application.job_title !== '—' ? application.job_title : (application?.job?.title || "Job Title")}
+                      {application.job_title && application.job_title !== 'â€”' ? application.job_title : (application?.job?.title || "Job Title")}
                     </td>
                     <td className="py-4 px-6 text-[14px] text-gray-600 border-r border-gray-200">
-                      {application.company_name && application.company_name !== '—' ? application.company_name : (application?.job?.company?.name || "Company")}
+                      {application.company_name && application.company_name !== 'â€”' ? application.company_name : (application?.job?.company?.name || "Company")}
                     </td>
                     <td className="py-4 px-6 text-[14px] text-gray-600 border-r border-gray-200">
-                      {application.job_location && application.job_location !== '—' ? application.job_location : (application?.job?.location || "Location")}
+                      {application.job_location && application.job_location !== 'â€”' ? application.job_location : (application?.job?.location || "Location")}
                     </td>
                     <td className="py-4 px-6 text-[14px] text-gray-600 border-r border-gray-200">
                       {(application.applied_date || application.created_at)

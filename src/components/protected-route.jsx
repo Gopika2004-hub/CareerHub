@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
+﻿/* eslint-disable react/prop-types */
 import { Navigate, useLocation } from "react-router-dom";
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@/lib/auth";
 import { useEffect, useRef, useState } from "react";
 
 // Module-level cache: avoids re-fetching the same user_id on every route change

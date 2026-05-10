@@ -1,4 +1,4 @@
-import { useUser } from "@clerk/clerk-react";
+﻿import { useUser } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { BarLoader } from "react-spinners";

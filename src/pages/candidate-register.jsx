@@ -1,4 +1,4 @@
-import { useSignUp } from "@clerk/clerk-react";
+﻿import { useSignUp } from "@/lib/auth";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, UserPlus, UserCircle, Mail, Phone, Lock, User, Home } from "lucide-react";
@@ -257,7 +257,7 @@ const CandidateRegister = () => {
             Return to Homepage
           </Link>
         </div>
-        <p className="text-center text-slate-500 text-xs mt-3">© 2026 CareerHub — Job Seeker Portal</p>
+        <p className="text-center text-slate-500 text-xs mt-3">Â© 2026 CareerHub â€” Job Seeker Portal</p>
       </div>
     </div>
   );

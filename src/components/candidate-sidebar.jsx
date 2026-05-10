@@ -1,7 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+﻿import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, User, ClipboardList, Heart, FileText, LogOut, Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@/lib/auth";
 import useFetch from "@/hooks/use-fetch";
 import { getProfile } from "@/api/apiProfile";
 
@@ -96,7 +96,7 @@ const CandidateSidebar = ({ customProfile }) => {
             className="w-full h-full object-cover"
             onError={(e) => {
               e.target.style.display = "none";
-              e.target.parentNode.innerHTML = '<span class="text-3xl">🐻</span>';
+              e.target.parentNode.innerHTML = '<span class="text-3xl">ðŸ»</span>';
             }}
           />
         </div>

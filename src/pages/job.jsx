@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { BarLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@/lib/auth";
 import {
   Briefcase,
   MapPin,
@@ -144,7 +144,7 @@ const applied = user
             </div>
           </section>
 
-          {/* Applications section — ONLY for recruiters, never for candidates */}
+          {/* Applications section â€” ONLY for recruiters, never for candidates */}
           {isRecruiter && (
             <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
@@ -193,7 +193,7 @@ const applied = user
 
         {/* Right Column: Sidebar */}
         <div className="space-y-6">
-          {/* Apply sidebar card — candidates only */}
+          {/* Apply sidebar card â€” candidates only */}
           {!isRecruiter && (
             <Card className="border-none shadow-xl shadow-blue-100 bg-[#eef8ff] rounded-3xl overflow-hidden">
               <CardContent className="p-8">

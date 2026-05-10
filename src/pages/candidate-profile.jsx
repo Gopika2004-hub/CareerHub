@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useUser } from "@clerk/clerk-react";
+﻿import { useState, useEffect, useRef } from "react";
+import { useUser } from "@/lib/auth";
 import { BarLoader } from "react-spinners";
 import { User, Mail, Phone, Calendar, MapPin, Briefcase, GraduationCap, PenLine, Plus, X } from "lucide-react";
 import CandidateSidebar from "@/components/candidate-sidebar";
@@ -144,7 +144,7 @@ const CandidateProfile = () => {
 
           <div>
             <h1 className="text-2xl font-bold text-gray-900 mb-1 flex items-center">
-              📄 My Profile
+              ðŸ“„ My Profile
             </h1>
             <p className="text-sm text-gray-500">
               Keep your profile updated to get better job matches.

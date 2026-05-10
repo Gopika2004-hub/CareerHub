@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useUser } from "@clerk/clerk-react";
+﻿import { useEffect, useState } from "react";
+import { useUser } from "@/lib/auth";
 import { State, City } from "country-state-city";
 import { BarLoader } from "react-spinners";
 import { useSearchParams } from "react-router-dom";
@@ -94,7 +94,7 @@ const JobListing = () => {
     ? City.getCitiesOfState("IN", selectedStateIso)
     : [];
 
-  // Client-side category filter — exact match against stored JSON array
+  // Client-side category filter â€” exact match against stored JSON array
   const filteredJobs = (jobs || []).filter(job => {
     if (!selectedCategory) return true;
     if (!job.category) return false;

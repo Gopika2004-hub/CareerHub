@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import {
   SignedIn,
   SignedOut,
   UserButton,
   useUser,
-} from "@clerk/clerk-react";
+} from "@/lib/auth";
 import { Button } from "./ui/button";
 import { BriefcaseBusiness, Heart, User } from "lucide-react";
 
@@ -15,10 +15,10 @@ const Header = () => {
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/5">
       
-      {/* ✅ CENTER CONTAINER */}
+      {/* âœ… CENTER CONTAINER */}
       <div className="max-w-7xl mx-auto flex justify-between items-center py-4">
         
-        {/* ✅ LEFT SIDE (Logo gap control) */}
+        {/* âœ… LEFT SIDE (Logo gap control) */}
         <div className="pl-6 sm:pl-0 lg:pl-0 flex items-center">
           <Link to="/" className="flex items-center">
             <img
@@ -29,7 +29,7 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* ✅ RIGHT SIDE (Buttons gap control) */}
+        {/* âœ… RIGHT SIDE (Buttons gap control) */}
         <div className="pr-6 sm:pr-0 lg:pr-0 flex items-center gap-3 sm:gap-6 lg:gap-8">
 
           <Link to="/jobs">
@@ -44,13 +44,13 @@ const Header = () => {
               
               <Link to="/candidate/login">
                 <button className="px-5 py-2 rounded-full bg-[#00529b] text-white font-medium shadow hover:scale-105 transition">
-                  Candidate Login →
+                  Candidate Login â†’
                 </button>
               </Link>
 
               <Link to="/employer/login">
                 <button className="px-5 py-2 rounded-full bg-[#00529b] text-white font-medium shadow hover:scale-105 transition">
-                  Employer Login →
+                  Employer Login â†’
                 </button>
               </Link>
 

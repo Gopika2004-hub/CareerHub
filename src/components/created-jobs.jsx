@@ -1,6 +1,6 @@
-import { getMyJobs } from "@/api/apiJobs";
+﻿import { getMyJobs } from "@/api/apiJobs";
 import useFetch from "@/hooks/use-fetch";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@/lib/auth";
 import { BarLoader } from "react-spinners";
 import JobCard from "./job-card";
 import { useEffect } from "react";
@@ -39,7 +39,7 @@ const CreatedJobs = () => {
               );
             })
           ) : (
-            <div>No Jobs Found 😢</div>
+            <div>No Jobs Found ðŸ˜¢</div>
           )}
         </div>
       )}

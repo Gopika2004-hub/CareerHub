@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
+﻿/* eslint-disable react/prop-types */
 import { useState, useEffect, forwardRef } from "react";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@/lib/auth";
 import { applyToJob } from "@/api/apiApplication";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,7 @@ import {
 export function ApplyJobDrawer({ job, applied = false }) {
   const { user } = useUser();
 
-  // ── Derive candidate profile from the real Clerk user ────────────────────
+  // â”€â”€ Derive candidate profile from the real Clerk user â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const candidateName = user?.firstName || user?.fullName || "Candidate";
   const candidateEmail =
     user?.primaryEmailAddress?.emailAddress ||
@@ -32,7 +32,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
     "";
   const candidatePhone = user?.unsafeMetadata?.mobile || "";
 
-  // ── Drawer + form state ───────────────────────────────────────────────────
+  // â”€â”€ Drawer + form state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
@@ -71,7 +71,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
     setFormData(f => ({ ...f, coverLetter: templates[type] || "" }));
   };
 
-  // ── Submit application as plain JSON ─────────────────────────────────────
+  // â”€â”€ Submit application as plain JSON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const onSubmit = async () => {
     setSubmitting(true);
     try {
@@ -100,7 +100,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
         email: candidateEmail,
         phone: candidatePhone,
         experience: "Fresher",
-        education: "—",
+        education: "â€”",
         skills: "",
         resume_name: finalResumeName,
         availability: formData.availability,
@@ -108,20 +108,20 @@ export function ApplyJobDrawer({ job, applied = false }) {
         cover_letter: formData.coverLetter,
       };
 
-      console.log("📤 Submitting application:", payload);
+      console.log("ðŸ“¤ Submitting application:", payload);
       const result = await applyToJob(userId, null, payload);
-      console.log("✅ Application result:", result);
+      console.log("âœ… Application result:", result);
 
       setSubmitted(true);
     } catch (err) {
-      console.error("❌ Application submit failed:", err);
+      console.error("âŒ Application submit failed:", err);
       setSubmitted(true); // still close gracefully
     } finally {
       setSubmitting(false);
     }
   };
 
-  // ── Step indicator ────────────────────────────────────────────────────────
+  // â”€â”€ Step indicator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const StepIndicator = () => (
     <div className="flex items-center justify-between mb-8 relative">
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-100 -z-10 rounded-full" />
@@ -140,7 +140,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
     </div>
   );
 
-  // ── Trigger button ────────────────────────────────────────────────────────
+  // â”€â”€ Trigger button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const TriggerButton = forwardRef((props, ref) => (
     <Button
       {...props}
@@ -152,12 +152,12 @@ export function ApplyJobDrawer({ job, applied = false }) {
         }`}
       disabled={!job?.isOpen}
     >
-      {!job?.isOpen ? "Hiring Closed" : applied ? "Applied ✓" : "Apply Now"}
+      {!job?.isOpen ? "Hiring Closed" : applied ? "Applied âœ“" : "Apply Now"}
     </Button>
   ));
   TriggerButton.displayName = "TriggerButton";
 
-  // ── Success screen ────────────────────────────────────────────────────────
+  // â”€â”€ Success screen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   if (submitted && open) {
     return (
       <Drawer open={open} onOpenChange={setOpen}>
@@ -214,7 +214,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
 
           <StepIndicator />
 
-          {/* ── STAGE 1: PROFILE ── */}
+          {/* â”€â”€ STAGE 1: PROFILE â”€â”€ */}
           {step === 1 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="flex items-center gap-4 mb-6">
@@ -284,7 +284,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
             </div>
           )}
 
-          {/* ── STAGE 2: COVER LETTER ── */}
+          {/* â”€â”€ STAGE 2: COVER LETTER â”€â”€ */}
           {step === 2 && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div className="space-y-3">
@@ -328,7 +328,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Expected Salary (₹/month) <span className="text-slate-400 font-normal">(Optional)</span></Label>
+                  <Label>Expected Salary (â‚¹/month) <span className="text-slate-400 font-normal">(Optional)</span></Label>
                   <Input type="number" placeholder="e.g. 35000" className="h-12 rounded-xl"
                     value={formData.expectedSalary}
                     onChange={e => setFormData(f => ({ ...f, expectedSalary: e.target.value }))}
@@ -347,7 +347,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
             </div>
           )}
 
-          {/* ── STAGE 3: REVIEW & SUBMIT ── */}
+          {/* â”€â”€ STAGE 3: REVIEW & SUBMIT â”€â”€ */}
           {step === 3 && (
             <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
               <h3 className="text-xl font-bold text-slate-900">Review Your Application</h3>
@@ -361,9 +361,9 @@ export function ApplyJobDrawer({ job, applied = false }) {
                   {[
                     ["Role", job?.title],
                     ["Company", job?.company_name || job?.company?.name],
-                    ["📍 Location", job?.location || "—"],
-                    ["💰 Salary", job?.salary_range || "—"],
-                    ["⏱ Experience", job?.experience_level || "—"],
+                    ["ðŸ“ Location", job?.location || "â€”"],
+                    ["ðŸ’° Salary", job?.salary_range || "â€”"],
+                    ["â± Experience", job?.experience_level || "â€”"],
                   ].map(([label, val]) => (
                     <div key={label}>
                       <div className="text-slate-500 mb-1">{label}</div>
@@ -381,11 +381,11 @@ export function ApplyJobDrawer({ job, applied = false }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                   {[
                     { label: "Name", value: candidateName },
-                    { label: "Email", value: candidateEmail || "—", full: true },
-                    { label: "Mobile", value: candidatePhone || "—" },
-                    { label: "Resume", value: formData.resumeFile?.name || "⚠️ Not uploaded", warn: !formData.resumeFile },
-                    { label: "Availability", value: formData.availability || "—" },
-                    { label: "Expected ₹", value: formData.expectedSalary ? `₹${Number(formData.expectedSalary).toLocaleString("en-IN")}/mo` : "—" },
+                    { label: "Email", value: candidateEmail || "â€”", full: true },
+                    { label: "Mobile", value: candidatePhone || "â€”" },
+                    { label: "Resume", value: formData.resumeFile?.name || "âš ï¸ Not uploaded", warn: !formData.resumeFile },
+                    { label: "Availability", value: formData.availability || "â€”" },
+                    { label: "Expected â‚¹", value: formData.expectedSalary ? `â‚¹${Number(formData.expectedSalary).toLocaleString("en-IN")}/mo` : "â€”" },
                   ].map(({ label, value, warn, full }) => (
                     <div key={label} className={`flex border-b border-blue-100/50 pb-2 ${full ? "md:col-span-2" : ""}`}>
                       <span className="text-slate-500 w-1/3 shrink-0">{label}:</span>
@@ -419,7 +419,7 @@ export function ApplyJobDrawer({ job, applied = false }) {
                     disabled={!formData.consent || submitting}
                     className="px-8 rounded-xl h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg shadow-blue-200 disabled:opacity-50"
                   >
-                    🚀 Submit Application
+                    ðŸš€ Submit Application
                   </Button>
                 </div>
               </div>

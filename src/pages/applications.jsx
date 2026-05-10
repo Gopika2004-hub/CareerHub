@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useUser, useClerk } from "@clerk/clerk-react";
+﻿import { useEffect, useState } from "react";
+import { useUser, useClerk } from "@/lib/auth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Briefcase, Users, Settings, LogOut,
@@ -51,32 +51,32 @@ function ApplicationRow({ app, uid, onStatusChange }) {
 
       {/* CANDIDATE */}
       <td className="px-5 py-4 border border-slate-200 min-w-[220px]">
-        <p className="font-bold text-[#1e293b] text-[15px] mb-2">{app.name || "—"}</p>
+        <p className="font-bold text-[#1e293b] text-[15px] mb-2">{app.name || "â€”"}</p>
         <div className="flex items-center gap-1.5 text-sm text-slate-600 mb-1.5">
           <Mail size={14} className="shrink-0 text-slate-400" />
-          <span>{app.email || "—"}</span>
+          <span>{app.email || "â€”"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-sm text-slate-600 mb-1.5">
           <Phone size={14} className="shrink-0 text-slate-400" />
-          <span>{app.phone || "—"}</span>
+          <span>{app.phone || "â€”"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-[13px] text-slate-500 mb-1.5">
           <Clock size={14} className="shrink-0 text-slate-400" />
-          <span>Available: {app.availability || "—"}</span>
+          <span>Available: {app.availability || "â€”"}</span>
         </div>
         <div className="flex items-center gap-1.5 text-[13px] text-slate-500">
           <IndianRupee size={14} className="shrink-0 text-slate-400" />
           <span>
             {app.expected_salary
-              ? `Expected: ₹${Number(app.expected_salary).toLocaleString("en-IN")}/mo`
-              : "Expected: —"}
+              ? `Expected: â‚¹${Number(app.expected_salary).toLocaleString("en-IN")}/mo`
+              : "Expected: â€”"}
           </span>
         </div>
       </td>
 
       {/* JOB APPLIED */}
       <td className="px-5 py-4 border border-slate-200 font-medium text-slate-700">
-        {app.job_title || "—"}
+        {app.job_title || "â€”"}
       </td>
 
       {/* APPLIED ON */}
@@ -85,7 +85,7 @@ function ApplicationRow({ app, uid, onStatusChange }) {
           ? new Date(app.created_at).toLocaleDateString("en-GB", {
               day: "2-digit", month: "short", year: "numeric",
             })
-          : "—"}
+          : "â€”"}
       </td>
 
       {/* RESUME */}
@@ -132,7 +132,7 @@ function ApplicationRow({ app, uid, onStatusChange }) {
                        text-[13px] font-semibold px-3 py-1.5 rounded-md transition-colors
                        whitespace-nowrap shadow-sm"
           >
-            {updating ? "Saving…" : "✓ Update"}
+            {updating ? "Savingâ€¦" : "âœ“ Update"}
           </button>
         </div>
       </td>
@@ -200,7 +200,7 @@ export default function ApplicationsPage() {
   return (
     <div className="flex min-h-screen bg-[#f8fafc]">
 
-      {/* ── Sidebar ── */}
+      {/* â”€â”€ Sidebar â”€â”€ */}
       <aside className="w-64 bg-[#1e293b] text-white flex flex-col shrink-0">
         <div className="p-8 flex flex-col items-center border-b border-slate-700">
           <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center
@@ -233,7 +233,7 @@ export default function ApplicationsPage() {
         </nav>
       </aside>
 
-      {/* ── Main ── */}
+      {/* â”€â”€ Main â”€â”€ */}
       <main className="flex-1 p-8 overflow-y-auto">
 
         {/* Title */}

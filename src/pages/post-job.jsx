@@ -1,4 +1,4 @@
-import { getCompanies } from "@/api/apiCompanies";
+﻿import { getCompanies } from "@/api/apiCompanies";
 import { addNewJob, getSingleJob, updateJob } from "@/api/apiJobs";
 import { useSearchParams } from "react-router-dom";
 import AddCompanyDrawer from "@/components/add-company-drawer";
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import useFetch from "@/hooks/use-fetch";
-import { useUser } from "@clerk/clerk-react";
+import { useUser } from "@/lib/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { State, City } from "country-state-city";
 import { useEffect, useState, useRef } from "react";
@@ -98,7 +98,7 @@ const PostJob = () => {
     name: "qualifications",
   });
 
-  // Watch category directly — avoids Controller stale-closure issue
+  // Watch category directly â€” avoids Controller stale-closure issue
   const categoryValue = watch("category") || [];
 
   const toggleCategory = (cat) => {
@@ -359,7 +359,7 @@ const PostJob = () => {
               {errors.job_type && <p className="text-xs text-red-500 mt-1">{errors.job_type.message}</p>}
             </div>
 
-            {/* Category Smart Tags — multi-select */}
+            {/* Category Smart Tags â€” multi-select */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700 ml-1">
                 Job Category* <span className="text-gray-400 font-normal">(select one or more)</span>
@@ -416,7 +416,7 @@ const PostJob = () => {
                 <label className="text-sm font-medium text-gray-700 ml-1">Salary Range*</label>
                 <div className="relative">
                   <Input 
-                    placeholder="e.g. 25,000–50,000 or 3L–6L" 
+                    placeholder="e.g. 25,000â€“50,000 or 3Lâ€“6L" 
                     className="pl-10 h-12 rounded-xl border-gray-200"
                     {...register("salary_range")} 
                   />
@@ -429,7 +429,7 @@ const PostJob = () => {
                 <label className="text-sm font-medium text-gray-700 ml-1">Experience Level*</label>
                 <div className="relative">
                   <Input 
-                    placeholder="e.g. 2–5 Years or Fresher" 
+                    placeholder="e.g. 2â€“5 Years or Fresher" 
                     className="pl-10 h-12 rounded-xl border-gray-200"
                     {...register("experience_level")} 
                   />
@@ -480,7 +480,7 @@ const PostJob = () => {
                     <label className="text-sm font-medium text-gray-700 ml-1">Company Size</label>
                     <div className="relative">
                       <Input 
-                        placeholder="e.g. 50–200" 
+                        placeholder="e.g. 50â€“200" 
                         className="pl-10 h-12 rounded-xl border-gray-200"
                         {...register("company_size")} 
                       />
@@ -649,7 +649,7 @@ const PostJob = () => {
               className="flex-1 h-14 rounded-2xl text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 shadow-lg shadow-blue-200 transition-all active:scale-[0.98]" 
               disabled={loadingCreateJob}
             >
-              {loadingCreateJob ? <BarLoader width={100} color="#fff" /> : (editJobId ? "💾 Update Job" : "🚀 Post Job")}
+              {loadingCreateJob ? <BarLoader width={100} color="#fff" /> : (editJobId ? "ðŸ’¾ Update Job" : "ðŸš€ Post Job")}
             </Button>
             <Button 
               type="button" 
@@ -657,7 +657,7 @@ const PostJob = () => {
               className="px-8 h-14 rounded-2xl text-lg font-semibold border-gray-200 hover:bg-gray-50 text-gray-600"
               onClick={() => navigate("/jobs")}
             >
-              ❌ Cancel
+              âŒ Cancel
             </Button>
           </div>
         </form>
